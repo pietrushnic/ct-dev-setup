@@ -1,0 +1,5 @@
+setenv bootm_boot_mode sec
+tftp 0x43000000 ct/sunxi/script.bin
+tftp 0x48000000 ct/sunxi/zImage
+setenv bootargs "root=/dev/nfs init=/sbin/init nfsroot=${serverip}:/srv/nfs/ct/rootfs rw ip=dhcp console=ttyS0,115200 rootwait sunxi_ve_mem_reserve=0 sunxi_g2d_mem_reserve=0 sunxi_no_mali_mem_reserve sunxi_fb_mem_reserve=16 hdmi.audio=EDID:0 disp.screen0_output_mode=EDID:1280x720p60 panic=10 consoleblank=0 debug"
+bootz 0x48000000
