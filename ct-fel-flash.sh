@@ -2,12 +2,16 @@
 
 export PATH=${PATH}:${HOME}/projects/3mdeb/cubietruck/toolchains/gcc-linaro-4.9-2015.05-x86_64_arm-linux-gnueabihf/bin
 
+# git://github.com/linux-sunxi/sunxi-tools.git
 FEL=${HOME}/projects/3mdeb/cubietruck/sunxi-tools
 
+# https://github.com/pietrushnic/u-boot-sunxi.git
 UBOOT=${HOME}/projects/3mdeb/cubietruck/u-boot
 
+# https://github.com/pietrushnic/CHIP-tools.git -b spl-image-builder
 CHIP_TOOLS=${HOME}/projects/3mdeb/cubietruck/CHIP-tools
 
+# https://github.com/pietrushnic/ct-dev-setup.git 
 CT_DEV_SETUP=${HOME}/projects/3mdeb/cubietruck/ct-dev-setup
 
 SPL_CMD=${CT_DEV_SETUP}/write_spl.cmd
