@@ -62,7 +62,7 @@ spl_img_builder() {
   ./spl-image-builder -s 40 -c 1024 -p 8192 -o 640 -u 8192 -r 3 -d sunxi-spl.bin out-sunxi-spl.bin
 }
 
-flash_spl() {
+spl_stage() {
   cd $CT_DEV_SETUP
   mkimage -A arm -T script -C none -n "flash cubietruck spl" -d $SPL_CMD $SPL_SCRIPT
   read -rsp $'Run Cubietruck in FEL mode and hit key ...\n' -n1 key
@@ -70,7 +70,7 @@ flash_spl() {
 }
 
 
-flash_uboot() {
+uboot_stage() {
   cd $CT_DEV_SETUP
   mkimage -A arm -T script -C none -n "flash cubietruck uboot" -d $UBOOT_CMD $UBOOT_SCRIPT
   read -rsp $'Disconect power and run Cubietruck in FEL mode again, then hit key ...\n' -n1 key
@@ -79,7 +79,7 @@ flash_uboot() {
 
 build_uboot_dis_ecc_rnd
 spl_img_builder
-flash_spl
+spl_stage
 
 build_uboot_no_oob_verify
-flash_uboot
+uboot_stage
