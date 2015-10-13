@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# https://releases.linaro.org/15.05/components/toolchain/binaries/arm-linux-gnueabihf/
 export PATH=${PATH}:${HOME}/projects/3mdeb/cubietruck/toolchains/gcc-linaro-4.9-2015.05-x86_64_arm-linux-gnueabihf/bin
 
 # git://github.com/linux-sunxi/sunxi-tools.git
