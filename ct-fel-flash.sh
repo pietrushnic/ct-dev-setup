@@ -48,9 +48,9 @@ flash_uboot() {
 
 
 flash() {
-  ${FEL}/fel spl ${UBOOT}/spl/sunxi-spl.bin
+  ${FEL}/fel spl ${CHIP_TOOLS}/sunxi-spl.bin
   sleep 1
-  ${FEL}/fel write 0x43000000 ${UBOOT}/spl/out-sunxi-spl.bin
+  ${FEL}/fel write 0x43000000 ${CHIP_TOOLS}/out-sunxi-spl.bin
   ${FEL}/fel write 0x4a000000 ${UBOOT}/${UBOOT_IMG_ALIGNED}
   ${FEL}/fel write 0x43100000 ${ALL_SCRIPT}
   ${FEL}/fel exe 0x4a000000
