@@ -63,7 +63,9 @@ build_uboot() {
   sed -i 's:CONFIG_SYS_NAND_U_BOOT_OFFS=0x8000:CONFIG_SYS_NAND_U_BOOT_OFFS=0x400000:g' .config
   sed -i 's:CONFIG_SUNXI_NAND_UBI_START=0x400000:CONFIG_SUNXI_NAND_UBI_START=0x600000:g' .config
   make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf-
-  dd if=${UBOOT_IMG} of=${UBOOT_IMG_ALIGNED} bs=8k conv=sync
+  UBOOT_IMG_SIZE=`stat ${UBOOT_IMG} --printf="%s"|xargs`
+  dd if=${UBOOT_IMG} of=${UBOOT_IMG_ALIGNED}
+  dd if=/dev/zero of=${UBOOT_IMG_ALIGNED} bs=1 count=`expr 786432 - ${UBOOT_IMG_SIZE}` seek=${UBOOT_IMG_SIZE}
 }
 
 build_uboot_dis_ecc_rnd() {
