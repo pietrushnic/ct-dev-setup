@@ -68,46 +68,10 @@ build_uboot() {
   dd if=/dev/zero of=${UBOOT_IMG_ALIGNED} bs=1 count=`expr 786432 - ${UBOOT_IMG_SIZE}` seek=${UBOOT_IMG_SIZE}
 }
 
-build_uboot_dis_ecc_rnd() {
-  cd $UBOOT
-  git co jwrdegoede/sunxi-wip/dis-ecc-rnd
-  make CROSS_COMPILE=arm-linux-gnueabihf- Cubietruck_defconfig
-  sed -i 's:CONFIG_SYS_NAND_U_BOOT_OFFS=0x8000:CONFIG_SYS_NAND_U_BOOT_OFFS=0x400000:g' .config
-  sed -i 's:CONFIG_SUNXI_NAND_UBI_START=0x400000:CONFIG_SUNXI_NAND_UBI_START=0x600000:g' .config
-  make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf-
-  dd if=${UBOOT_IMG} of=${UBOOT_IMG_ALIGNED} bs=8k conv=sync
-}
-
-
-build_uboot_no_oob_verify() {
-  cd $UBOOT
-  git co jwrdegoede/sunxi-wip/no-oob-verify
-  make CROSS_COMPILE=arm-linux-gnueabihf- Cubietruck_defconfig
-  sed -i 's:CONFIG_SYS_NAND_U_BOOT_OFFS=0x8000:CONFIG_SYS_NAND_U_BOOT_OFFS=0x400000:g' .config
-  sed -i 's:CONFIG_SUNXI_NAND_UBI_START=0x400000:CONFIG_SUNXI_NAND_UBI_START=0x600000:g' .config
-  make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf-
-  dd if=${UBOOT_IMG} of=${UBOOT_IMG_ALIGNED} bs=8k conv=sync
-}
-
 spl_img_builder() {
   cd $CHIP_TOOLS
   cp $UBOOT/spl/sunxi-spl.bin .
   ./spl-image-builder -s 40 -c 1024 -p 8192 -o 640 -u 8192 -r 3 -d sunxi-spl.bin out-sunxi-spl.bin
-}
-
-spl_stage() {
-  cd $CT_DEV_SETUP
-  mkimage -A arm -T script -C none -n "flash cubietruck spl" -d $SPL_CMD $SPL_SCRIPT
-  read -rsp $'Run Cubietruck in FEL mode and hit key ...\n' -n1 key
-  flash_spl
-}
-
-
-uboot_stage() {
-  cd $CT_DEV_SETUP
-  mkimage -A arm -T script -C none -n "flash cubietruck uboot" -d $UBOOT_CMD $UBOOT_SCRIPT
-  read -rsp $'Disconect power and run Cubietruck in FEL mode again, then hit key ...\n' -n1 key
-  flash_uboot
 }
 
 all_stage() {
@@ -116,13 +80,6 @@ all_stage() {
   read -rsp $'Disconect power and run Cubietruck in FEL mode again, then hit key ...\n' -n1 key
   flash
 }
-
-#build_uboot_dis_ecc_rnd
-#spl_img_builder
-#spl_stage
-#
-#build_uboot_no_oob_verify
-#uboot_stage
 
 build_uboot
 spl_img_builder
